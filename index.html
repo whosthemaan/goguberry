@@ -96,7 +96,7 @@
   }
 
   video {
-    width: 80%;
+    width: 60%;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
   }
@@ -114,7 +114,7 @@
   <h1>wish you a very happy 25th birthday!!!</h1>
   <img src="3.jpeg" alt="welcome" class="welcome-img">
   <audio id="firecrackerSound" src="firework.mp3"></audio>
-  <button onclick="startExperience()">🎵 Tap to Begin</button>
+  <button onclick="startExperience()">Tap to Begin</button>
 </div>
 
 <!-- Quiz Intro Page -->
@@ -167,7 +167,7 @@
     from here on. I love you and I wish you a very happy birthday again! Here is a short video, enjoy!
   </div>
   <video id="surpriseVideo" controls>
-    <source src="video.mp4" type="video/mp4">
+    <source src="gogu_video.mp4" type="video/mp4">
     Your browser doesn’t support the video tag.
   </video>
 </div>
@@ -178,28 +178,40 @@
   const surpriseVideo = document.getElementById("surpriseVideo");
 
   function startExperience() {
-    firecrackerSound.play();
-    firecrackerSound.loop = true;
-    document.querySelector("#welcome button").style.display = "none"; // hide button
-  }
-
-  // firecrackerSound.play().catch(()=>{});  // catch autoplay errors silently
-  // firecrackerSound.loop = true;
-
-  setTimeout(() => {
-    document.getElementById("welcome").classList.remove("active");
-    document.getElementById("intro").classList.add("active");
-
-    setTimeout(() => {
-      document.getElementById("intro").classList.remove("active");
-      document.getElementById("q1").classList.add("active");
-      firecrackerSound.pause();
+    // 🎆 start firecracker sound safely on click
+    if (firecrackerSound) {
       firecrackerSound.currentTime = 0;
-      quizSound.play().catch(()=>{});
-      quizSound.loop = true;
-    }, 13000);
+      firecrackerSound.loop = true;
+      firecrackerSound.play().catch(err => console.log("Audio play failed:", err));
+    }
 
-  }, 7000);
+    // hide the button
+    document.querySelector("#welcome button").style.display = "none"; 
+
+    // after 5s → go to intro
+    setTimeout(() => {
+      document.getElementById("welcome").classList.remove("active");
+      document.getElementById("intro").classList.add("active");
+
+      // after another 5s → go to Q1
+      setTimeout(() => {
+        document.getElementById("intro").classList.remove("active");
+        document.getElementById("q1").classList.add("active");
+
+        // stop firecracker sound
+        if (firecrackerSound) {
+          firecrackerSound.pause();
+          firecrackerSound.currentTime = 0;
+        }
+
+        // start quiz music
+        quizSound.currentTime = 0;
+        quizSound.loop = true;
+        quizSound.play().catch(err => console.log("Quiz music failed:", err));
+      }, 7000);
+
+    }, 7000);
+  }
 
   surpriseVideo.addEventListener("play", () => {
   quizSound.pause();
