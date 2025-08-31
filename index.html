@@ -114,6 +114,7 @@
   <h1>wish you a very happy 25th birthday!!!</h1>
   <img src="3.jpeg" alt="welcome" class="welcome-img">
   <audio id="firecrackerSound" src="firework.mp3"></audio>
+  <button onclick="startExperience()">🎵 Tap to Begin</button>
 </div>
 
 <!-- Quiz Intro Page -->
@@ -176,8 +177,14 @@
   const firecrackerSound = document.getElementById("firecrackerSound");
   const surpriseVideo = document.getElementById("surpriseVideo");
 
-  firecrackerSound.play().catch(()=>{});  // catch autoplay errors silently
-  firecrackerSound.loop = true;
+  function startExperience() {
+    firecrackerSound.play();
+    firecrackerSound.loop = true;
+    document.querySelector("#welcome button").style.display = "none"; // hide button
+  }
+
+  // firecrackerSound.play().catch(()=>{});  // catch autoplay errors silently
+  // firecrackerSound.loop = true;
 
   setTimeout(() => {
     document.getElementById("welcome").classList.remove("active");
@@ -190,7 +197,7 @@
       firecrackerSound.currentTime = 0;
       quizSound.play().catch(()=>{});
       quizSound.loop = true;
-    }, 7000);
+    }, 13000);
 
   }, 7000);
 
